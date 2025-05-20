@@ -37,7 +37,9 @@
             color: orange;
         }
     </style>
-    <h1>Hello from view Index</h1>
+    <center>
+        <h1>Hello from view Index</h1>
+    </center>
 
     <table>
         <thead>
