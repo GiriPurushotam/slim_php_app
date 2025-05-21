@@ -18,6 +18,8 @@
     "doctrine/dbal": "^4.2",
     "doctrine/orm": "^3.3",
     "symfony/cache": "^7.2",
-    "doctrine/migrations": "^3.9"
+    "doctrine/migrations": "^3.9",
+    "illuminate/database": "^12.15",
+    "illuminate/events": "^12.15"
   }
 }

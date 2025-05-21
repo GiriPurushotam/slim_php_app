@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Attribute\Get;
 use App\Enums\InvoiceStatus;
-use App\Models\TestInvoice;
+use App\Models\TestInvoices;
 use App\View;
 
 class InvoiceController
@@ -14,7 +14,7 @@ class InvoiceController
     #[Get('/invoices')]
     public function index(): View
     {
-        $invoices = (new TestInvoice())->all(InvoiceStatus::PAID);
+        $invoices = (new TestInvoices())->all(InvoiceStatus::PAID);
         return View::make('invoice/index', ['invoices' => $invoices]);
     }
 }

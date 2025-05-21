@@ -8,20 +8,24 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Configuration\Migration\PhpFile;
-use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-$config = new PhpFile('migrations.php'); // Or use one of the
 
-$connectionParams = [
-    'dbname' => $_ENV['DB_NAME'],
+$dotEnv = Dotenv::createImmutable(__DIR__);
+$dotEnv->load();
+
+$config = new PhpFile('migrations.php'); // Or use one of the Doctrine\Migrations\Configuration\Configuration\* loaders
+
+
+$params = [
+
+    'host' => $_ENV['DB_HOST'],
     'user' => $_ENV['DB_USER'],
     'password' => $_ENV['DB_PASS'],
-    'host' => $_ENV['DB_HOST'],
+    'dbname' => $_ENV['DB_NAME'],
     'driver' => $_ENV['DB_DRIVER'] ?? 'pdo_mysql',
 ];
 
-$entityManger = new EntityManager(DriverManager::getConnection($connectionParams), ORMSetup::createAttributeMetadataConfiguration([__DIR__ . 'app/Entity']));
+$entityManager = new EntityManager(DriverManager::getConnection($params), ORMSetup::createAttributeMetadataConfiguration([__DIR__ . '/app/Entity']));
 
-return DependencyFactory::fromConnection($config, new ExistingConnection($conn));
+return DependencyFactory::fromEntityManager($config, new ExistingEntityManager($entityManager));

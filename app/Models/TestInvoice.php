@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Model;
-use App\Enums\InvoiceStatus;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TestInvoice extends Model
 {
+    const UPDATED_AT = null;
 
-    public function all(InvoiceStatus $status): array
+    public function items(): HasMany
     {
-        return $this->db->createQueryBuilder()->select('id', 'invoice_number', 'amount', 'status')->from('test_invoices')
-            ->where('status =?')
-            ->setParameter(0, $status->value)
-            ->fetchAllAssociative();
+        return $this->hasMany(InvoiceItem::class);
     }
 }
