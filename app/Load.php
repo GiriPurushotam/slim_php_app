@@ -4,24 +4,57 @@ namespace App;
 
 use App\DB;
 use Exception;
+use Dotenv\Dotenv;
+use Twig\Environment;
+use Illuminate\Events\Dispatcher;
+use Twig\Loader\FilesystemLoader;
+use Illuminate\Container\Container;
 use App\Exception\RouteNotFoundException;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Twig\Extra\Intl\IntlExtension;
 
 class Load
 {
-    private static DB $db;
+
+    private Config $config;
 
     public function __construct(
         protected Routing $routing,
         protected array $request,
-        protected Config $config
-    ) {
+        protected Container $container,
 
-        static::$db = new DB($config->db ?? []);
+    ) {}
+
+    public function initDb(array $config)
+    {
+
+        $capsule = new Capsule();
+
+        $capsule->addConnection($config);
+        $capsule->setEventDispatcher(new Dispatcher($this->container));
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
     }
 
-    public static function db(): DB
+    public function boot(): static
     {
-        return static::$db;
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
+        $dotenv->load();
+
+        $this->config = new Config($_ENV);
+
+        $this->initDb($this->config->db);
+
+        $loader = new FilesystemLoader(VIEW_PATH);
+        $twig = new Environment($loader, [
+            'cache' => STORAGE_PATH .  '/cache',
+            'auto_reload' => true,
+        ]);
+
+        $twig->addExtension(new IntlExtension());
+        $this->container->singleton(Environment::class, fn() => $twig);
+
+        return $this;
     }
 
 

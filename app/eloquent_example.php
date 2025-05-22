@@ -39,6 +39,6 @@ require __DIR__ . '/../eloquent.php';
 
 // update data 
 
-$invoiceId = 5;
+$invoiceId = 3;
 
 TestInvoice::query()->where('id', $invoiceId)->update(['status' => InvoiceStatus::PAID]);

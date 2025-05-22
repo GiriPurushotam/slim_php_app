@@ -6,6 +6,7 @@ namespace App;
 
 use App\Attribute\Route;
 use App\Exception\RouteNotFoundException;
+use Illuminate\Container\Container;
 
 class Routing
 {

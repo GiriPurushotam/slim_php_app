@@ -9,11 +9,12 @@ use Illuminate\Container\Container;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$capsule = new Capsule;
+
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+$capsule = new Capsule;
 
 $connectionParams = [
     'database' => $_ENV['DB_NAME'],

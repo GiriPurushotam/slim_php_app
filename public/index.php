@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Container;
+
 use App\Controller\HomeController;
 use App\Load;
 use App\Routing;
 use App\Config;
 use App\Controller\InvoiceController;
 use App\DB;
-use Dotenv\Dotenv;
-
-$dotEnv = Dotenv::createImmutable(dirname(__DIR__));
-$dotEnv->load();
-
+use Illuminate\Container\Container;
 
 define('VIEW_PATH', __DIR__ . '/../views');
-
-$config = new Config($_ENV);
+define('STORAGE_PATH', __DIR__ . '/../storge');
 
 
 $container = new Container();
@@ -29,5 +24,8 @@ $routing->registerRoutesFromControllerAttributes([
     HomeController::class,
     InvoiceController::class,
 ]);
-(new Load($routing, ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']], $config))->run();
-$pdo = Load::db()->getConnection();
+(new Load(
+    $routing,
+    ['uri' => $_SERVER['REQUEST_URI'], 'method' => $_SERVER['REQUEST_METHOD']],
+    $container
+))->boot()->run();
