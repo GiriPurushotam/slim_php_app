@@ -16,4 +16,4 @@ RUN docker-php-ext-install pdo_mysql intl
 
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/public|' /etc/apache2/sites-available/000-default.conf
 
-RUN a2enmod rewrite
+RUN a2enmod rewrite  

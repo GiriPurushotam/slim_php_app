@@ -14,14 +14,17 @@ class Config
         $this->config = [
             'db' => [
                 'host'     => $env['DB_HOST'],
-                'username' => $env['DB_USER'],
+                'port'  => $env['DB_PORT'],
+                'user' => $env['DB_USER'],
                 'password' => $env['DB_PASS'],
-                'database' => $env['DB_NAME'],
+                'dbname' => $env['DB_NAME'],
                 'driver'   => $env['DB_DRIVER'] ?? 'mysql',
                 'charset'  => 'utf8',
                 'collation' => 'utf8_unicode_ci',
                 'prefix'   => '',
             ],
+
+            'environment' => $env['APP_ENVIRONMENR'] ?? 'production',
         ];
     }
 

@@ -10,6 +10,9 @@ use Illuminate\Events\Dispatcher;
 use Twig\Loader\FilesystemLoader;
 use Illuminate\Container\Container;
 use App\Exception\RouteNotFoundException;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Twig\Extra\Intl\IntlExtension;
 
@@ -53,6 +56,16 @@ class Load
 
         $twig->addExtension(new IntlExtension());
         $this->container->singleton(Environment::class, fn() => $twig);
+        $this->container->singleton(EntityManager::class, function () {
+            $doctrineConfig = ORMSetup::createAttributeMetadataConfiguration(
+                [__DIR__ . '/Entity'],
+                true,
+            );
+            $connection = DriverManager::getConnection($this->config->db, $doctrineConfig);
+
+            return new EntityManager($connection, $doctrineConfig);
+        });
+
 
         return $this;
     }

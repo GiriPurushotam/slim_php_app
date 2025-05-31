@@ -14,7 +14,6 @@
   ],
   "require": {
     "vlucas/phpdotenv": "^5.6",
-    "psr/container": "^2.0",
     "doctrine/dbal": "^4.2",
     "doctrine/orm": "^3.3",
     "symfony/cache": "^7.2",
@@ -22,6 +21,10 @@
     "illuminate/database": "^12.15",
     "illuminate/events": "^12.15",
     "twig/twig": "^3.21",
-    "twig/intl-extra": "^3.21"
+    "twig/intl-extra": "^3.21",
+    "slim/slim": "4.*",
+    "slim/psr7": "^1.7",
+    "slim/twig-view": "^3.4",
+    "php-di/php-di": "^7.0"
   }
 }

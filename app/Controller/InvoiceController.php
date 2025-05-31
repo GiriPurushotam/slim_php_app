@@ -4,37 +4,34 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Attribute\Get;
-use App\Enums\InvoiceStatus;
-use App\Models\TestInvoice;
-use App\Models\TestInvoices;
 use App\View;
 use Carbon\Carbon;
+use Slim\Views\Twig;
+use App\Attribute\Get;
+use App\Models\TestInvoice;
+use App\Enums\InvoiceStatus;
+use App\Models\TestInvoices;
+use App\Services\InvoiceService;
+use Doctrine\ORM\EntityManager;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Helper\Dumper;
-use Twig\Environment as Twig;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class InvoiceController
 {
 
-    public function __construct(private Twig $twig) {}
+    public function __construct(private readonly Twig $twig, private InvoiceService $invoiceService) {}
 
-    #[Get('/invoices')]
-    public function index(): string
+    public function index(Request $request, Response $response, $args): Response
     {
-        $testInvoices = TestInvoice::query()->where('status', InvoiceStatus::PAID)->get()->map(
-            fn(TestInvoice $testInvoice) => [
-                'invoice_number' => $testInvoice->invoice_number,
-                'amount' => $testInvoice->amount,
-                'status' => $testInvoice->status->toString(),
-                'dueDate' => $testInvoice->due_date->toDateTimeString(),
-            ]
-        )->toArray();
-
-        return $this->twig->render('invoice/index.twig', ['testInvoices' => $testInvoices,]);
+        return $this->twig->render(
+            $response,
+            'invoice/index.twig',
+            ['testInvoices' => $this->invoiceService->getPaidInvoices()]
+        );
     }
 
-    #[Get('/invoices/new')]
     public function create()
     {
         $testInvoice = new TestInvoice();

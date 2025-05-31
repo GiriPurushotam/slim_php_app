@@ -1,72 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+	</head>
 
-<body>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-        }
+	<body>
+		<style>
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				text-align: center;
+			}
 
-        table tr th,
-        table tr td {
-            border: 1px #eee solid;
-            padding: 5px;
-        }
+			table tr th,
+			table tr td {
+				border: 1px #eee solid;
+				padding: 5px;
+			}
 
-        .color-green {
-            color: green;
-        }
+			.color-green {
+				color: green;
+			}
 
-        .color-red {
-            color: red;
-        }
+			.color-red {
+				color: red;
+			}
 
-        .color-grey {
-            color: grey;
-        }
+			.color-grey {
+				color: grey;
+			}
 
-        .color-orange {
-            color: orange;
-        }
-    </style>
-    <center>
-        <h1>Hello from view Index</h1>
-    </center>
+			.color-orange {
+				color: orange;
+			}
+		</style>
+		<center>
+			<h1>Hello from view Index</h1>
+		</center>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Invoice #</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Due Date</th>
-            </tr>
-        </thead>
-        <tbody>
-           {% for testInvoice in testInvoices %}
-    
-                    <tr>
-                        <td>{{testInvoice.invoiceNumber}}</td>
-                        <td>{{ testInvoice.amount|format_currency('USD')}}</td>
-                        <td>{{ testInvoice.status }}
-                        <td>
-                           {{ testInvoice.dueDate is empty ? 'N/A' : testInvoice.dueDate|date('m/d/Y') }}
-                        </td>
-                    </tr>
-               {% else %}
-                <tr><td colspan="4">No Invoices Found </td> </tr>
-                {% endfor %}
-                
-        </tbody>
-    </table>
-</body>
+		<table>
+			<thead>
+				<tr>
+					<th>Invoice #</th>
+					<th>Amount</th>
+					<th>Status</th>
+					<th>Due Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for testInvoice in testInvoices %}
+
+					<tr>
+						<td>{{testInvoice.invoiceNumber}}</td>
+						<td>{{ testInvoice.amount|format_currency('USD')}}</td>
+						<td>{{ testInvoice.status.value }}</td>
+						<td>
+							{{ testInvoice.dueDate is empty ? 'N/A' : testInvoice.dueDate|date('m/d/Y') }}
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">No Invoices Found
+						</td>
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+	</body>
 
 </html>
